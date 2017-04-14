@@ -1,15 +1,9 @@
-import falcon
+from sanic import Sanic
+from sanic.response import json
+
+app = application = Sanic(__name__)
 
 
-# REST API
-# ------------
-
-
-class ProductResource(object):
-    def on_get(self, req, resp):
-        resp.body = '{"message": "I\'m product service!"}'
-        resp.status = falcon.HTTP_200
-
-
-api = application = falcon.API()
-api.add_route('/', ProductResource())
+@app.route("/product")
+async def test(request):
+    return json({"hello": "world"})

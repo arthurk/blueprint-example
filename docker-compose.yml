@@ -14,7 +14,7 @@ services:
       - "8001:8000"
     volumes:
       - .:/code
-    command: gunicorn --reload -b 0.0.0.0:8000 product.app
+    command: gunicorn product.app --reload -b 0.0.0.0:8000 --worker-class sanic.worker.GunicornWorker
 
   webshop:
     build: .
@@ -22,4 +22,4 @@ services:
       - "8002:8000"
     volumes:
       - .:/code
-    command: gunicorn --reload -b 0.0.0.0:8000 webshop.app
+    command: gunicorn webshop.wsgi --reload -b 0.0.0.0:8000 --worker-class sanic.worker.GunicornWorker

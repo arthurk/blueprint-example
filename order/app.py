@@ -45,6 +45,7 @@ class OrderResource:
 
     def on_get(self, req, resp):
         """Get order"""
+        resp.body = json.dumps({'hello': 'world'})
         resp.status = falcon.HTTP_200
 
 
