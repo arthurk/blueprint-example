@@ -44,6 +44,10 @@ class WebshopService:
         return event['data']['webshop']
 
     def deliver_order(order):
+        # no business logic here
+        # we just assume everything went OK
+
+        # send the event that order has been delivered
         event = {
             'type': 'order_delivered',
             'data': {

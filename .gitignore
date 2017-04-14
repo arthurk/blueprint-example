@@ -87,3 +87,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# tinydb
+product_db.json
+order_db.json
+webshop_db.json

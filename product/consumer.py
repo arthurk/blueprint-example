@@ -6,7 +6,7 @@ from confluent_kafka import Consumer, KafkaError, KafkaException
 from product import logger
 from product.service import ProductService
 
-logger.info('Starting dispatcher')
+logger.info('Starting consumer')
 
 # connect to kafka
 c = Consumer({'bootstrap.servers': '192.168.3.42',
