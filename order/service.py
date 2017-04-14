@@ -2,6 +2,7 @@ import datetime
 import json
 
 from confluent_kafka import Producer
+from tinydb import TinyDB
 
 from order import logger
 
@@ -9,17 +10,30 @@ from order import logger
 p = Producer({'bootstrap.servers': '192.168.3.42',
               'retries': 0})
 
+# initialize db
+db = TinyDB('order_db.json')
+
 
 class OrderService:
-    def create_order(order):
+    def get(order_id):
+        order = db.get(eid=order_id)
+        return order
+
+    def create(webshop_id, product_id, quantity):
+        # create entry in db
+        order_id = db.insert({'webshop_id': webshop_id,
+                              'product_id': product_id,
+                              'quantity': quantity})
+
+        # send event
         event = {
             'type': 'order_created',
             'data': {
                 'created_at': datetime.datetime.now().isoformat(),
                 'order': {
-                    'id': order.order_id,
-                    'product_id': order.product_id,
-                    'quantity': order.quantity
+                    'id': order_id,
+                    'product_id': product_id,
+                    'quantity': quantity
                 }
             }
         }
@@ -28,7 +42,13 @@ class OrderService:
         p.produce('order', json.dumps(event))
         p.flush()
 
-    def accept_order(order):
+        return event['data']['order']
+
+    def accept(order):
+        # no business logic
+        # we just accept the order
+
+        # send event
         event = {
             'type': 'order_accepted',
             'data': {
@@ -38,11 +58,16 @@ class OrderService:
                 }
             }
         }
+
         logger.info(f'publishing {event}')
         p.produce('order', json.dumps(event))
         p.flush()
 
-    def finish_order(order):
+    def finish(order):
+        # no business logic
+        # we just finish the order
+
+        # send event
         event = {
             'type': 'order_finished',
             'data': {
@@ -52,6 +77,7 @@ class OrderService:
                 }
             }
         }
+
         logger.info(f'publishing {event}')
         p.produce('order', json.dumps(event))
         p.flush()

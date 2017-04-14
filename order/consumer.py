@@ -6,7 +6,7 @@ from confluent_kafka import Consumer, KafkaError, KafkaException
 from order import logger
 from order.service import OrderService
 
-logger.info('Starting dispatcher')
+logger.info('Starting order consumer')
 
 # connect to kafka
 c = Consumer({'bootstrap.servers': '192.168.3.42',
@@ -47,9 +47,9 @@ try:
             if event_type is None:
                 continue
             elif event_type == 'order_product_validated':
-                OrderService.accept_order(event['data']['order'])
+                OrderService.accept(event['data']['order'])
             elif event_type == 'order_delivered':
-                OrderService.finish_order(event['data']['order'])
+                OrderService.finish(event['data']['order'])
 
 except KeyboardInterrupt:
     sys.stderr.write('Aborted by user\n')

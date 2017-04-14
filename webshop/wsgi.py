@@ -2,12 +2,15 @@ from sanic import Sanic
 from sanic import response
 from sanic.exceptions import NotFound, InvalidUsage
 
+from webshop import logger
 from webshop.service import WebshopService
+
+logger.info('Starting webshop web service')
 
 app = application = Sanic(__name__)
 
 
-@app.post('/webshop')
+@app.post('/webshops')
 async def create_webshop(request):
     """
     Create a new webshop
@@ -21,7 +24,7 @@ async def create_webshop(request):
     return response.json(webshop)
 
 
-@app.get('/webshop/<webshop_id:int>')
+@app.get('/webshops/<webshop_id:int>')
 async def get_webshop(request, webshop_id):
     """
     Get information about a webshop
@@ -31,6 +34,3 @@ async def get_webshop(request, webshop_id):
         raise NotFound('Invalid webshop id')
 
     return response.json(result)
-
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8000)
