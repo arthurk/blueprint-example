@@ -1,0 +1,25 @@
+version: "3"
+services:
+  order:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code
+    command: gunicorn --reload -b 0.0.0.0:8000 order.app
+
+  product:
+    build: .
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/code
+    command: gunicorn --reload -b 0.0.0.0:8000 product.app
+
+  webshop:
+    build: .
+    ports:
+      - "8002:8000"
+    volumes:
+      - .:/code
+    command: gunicorn --reload -b 0.0.0.0:8000 webshop.app
